@@ -1,0 +1,1 @@
+Frame id: %d, timestamp: %d, hands: %d, fingers: %d, tools: %d, gestures: %d
