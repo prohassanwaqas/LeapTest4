@@ -4,9 +4,7 @@ import xlsxwriter
 import sys
 import openpyxl
 from openpyxl.styles.builtins import output
-
 import Leap
-
 
 class SampleListener(Leap.Listener):
     #
@@ -37,24 +35,12 @@ class SampleListener(Leap.Listener):
 
     def on_frame(self, controller):
         frame = controller.frame()
-       #
-        """print "Frame ID: " + str(frame.id) \
-                     + " Timestamps: " + str(frame.timestamp) \
-                     + " # of Hands: " + str(len(frame.hands)) \
-                     + " # of Fingers: " + str(len(frame.fingers)) \
-                     + " # of Tools: " + str(len(frame.tools)) \
-                     + " # of Gestures: " + str(len(frame.gestures()))"""
-        #
-
         for hand in frame.hands:
             handType ="Left Hand" if hand.is_left else "Right Hand"
-            print handType + "Hand ID" + str(hand.id) + "Palm Position" + str(hand.palm_position)
+            print handType + "Hand ID" + str(hand.id) + "Palm Position" + str(hand.pake_position)
             normal = hand.palm_normal
             direction = hand.direction
             print "pitch: " + str(direction.pitch * Leap.RAD_TO_DEG) + " Roll: " + str(normal.roll * Leap.RAD_TO_DEG) + " Yaw: " + str(direction.yaw * Leap.RAD_TO_DEG)
-
-       # print "Frame id: %d, timestamp: %d, hands: %d, fingers: %d, tools: %d, gestures: %d" \
-         #     % ( frame.id, frame.timestamp, len(frame.hands), len(frame.fingers), len(frame.tools), len(frame.gestures()))
 
 
 
@@ -81,3 +67,10 @@ if __name__ == "__main__":
     main()
 
 
+
+    '''   print "Frame ID: " + str(frame.id) \
+                     + " Timestamps: " + str(frame.timestamp) \
+                     + " # of Hands: " + str(len(frame.hands)) \
+                     + " # of Fingers: " + str(len(frame.fingers)) \
+                     + " # of Tools: " + str(len(frame.tools)) \
+                     + " # of Gestures: " + str(len(frame.gestures())) '''
