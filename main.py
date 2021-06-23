@@ -1,30 +1,28 @@
 #coding=utf-8
-import pandas as pd
+import pandas
 
-import sys
+import numpy as np
 
-import Leap
 ################################################################
 '%matplotlib inline'
 
-import numpy as np
-import cv2
+# import numpy as np
 
-import glob
-import pandas as pd
+# import pandas as pd
 
 import Leap, ctypes, os, sys
-import pickle
 
-#from leap_data_helper import *     ########un comment this when figured out what where this goes and to do with it
 
-import matplotlib.pyplot as plt
+# from leap_data_helper import *     ########un comment this when figured out what where this goes and to do with it
+
+# import matplotlib.pyplot as plt
 ################################################################
 class SampleListener(Leap.Listener):
     #
     finger_names = ['Thumb', 'Index', 'Middle', 'Ring', 'Pinky']
     bone_names = ['Metacarpal', 'Proximal', 'Intermediate', 'Distal']
     state_names = ['STATE_INVALID', 'STATE_START', 'STATE_UPDATE', 'STATE_END']
+
     #
     def on_init(self, controller):
         print("Initialized")
@@ -33,9 +31,9 @@ class SampleListener(Leap.Listener):
                    controller):
         print("Motion Sensor Connected!")
         #
-        controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE);
-        controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP);
-        controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP);
+        controller.enable_gesture(Leap.Gesture.TYPE_CIRCLE)
+        controller.enable_gesture(Leap.Gesture.TYPE_KEY_TAP)
+        controller.enable_gesture(Leap.Gesture.TYPE_SCREEN_TAP)
         #
         controller.enable_gesture(Leap.Gesture.TYPE_SWIPE)
         print
@@ -47,22 +45,23 @@ class SampleListener(Leap.Listener):
         def on_exit(self, controller):
             print("Exited")
 
-
     def on_frame(self, controller):
 
+        global finger
+        frame = controller.frame()
 
-       frame = controller.frame()
+        for hand in frame.hands:
+            for finger in hand.fingers:    '''print "Type: " + self.fingers_names[finger.type()]'''
+            print
+            " type: " + self.finger_names[finger.type] + "ID: " + str(finger.id) + "Length (mm): " + str(
+                finger.length) + " width(mm)" + str(finger.width)
 
-       for hand in frame.hands:
-           for finger in hand.fingers:    '''print "Type: " + self.fingers_names[finger.type()]'''
-           print
-           " type: " + self.finger_names[finger.type] + "ID: " + str(finger.id) + "Length (mm): " + str(
-               finger.length) + " width(mm)" + str(finger.width)
+        for b in range(0, 4):
+            bone = finger.bone(b)
+            print
+            "Bone: " + self.bone_names[bone.type] + "Start: " + str(bone.prev_joint) + "End: " + str(
+                bone.next_joint) + "Direction: " + str(bone.direction)
 
-       for b in range(0, 4):
-           bone = finger.bone(b)
-           print
-           "Bone: " + self.bone_names[bone.type] + "Start: " + str(bone.prev_joint) + "End: " + str(bone.next_joint) + "Direction: " + str(bone.direction)
 
 ''' for hand in frame.hands:
             handType ="Left Hand" if hand.is_left else "Right Hand"
@@ -73,9 +72,7 @@ class SampleListener(Leap.Listener):
 '''
 
 
-
 def main():
-
     # Create listener and controller
     listener = SampleListener()
     controller = Leap.Controller()
@@ -94,10 +91,9 @@ def main():
         # Remove the sample listener when done
         controller.remove_listener(listener)
 
+
 if __name__ == "__main__":
     main()
-
-
 
     '''   print "Frame ID: " + str(frame.id) \
                      + " Timestamps: " + str(frame.timestamp) \
@@ -106,7 +102,8 @@ if __name__ == "__main__":
                      + " # of Tools: " + str(len(frame.tools)) \
                      + " # of Gestures: " + str(len(frame.gestures())) '''
 
-###################################################################################################################################
+
+    ###################################################################################################################################
     def cal_2vec_angle(v1, v2):
         # return the value of cos(angle)
         return np.dot(v1, v2) / np.linalg.norm(v1) / np.linalg.norm(v2)
